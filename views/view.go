@@ -3,18 +3,23 @@ package views
 import "html/template"
 
 // NewView - append layouts to data templates
-func NewView(files ...string) *View {
-	files = append(files, "views/layouts/footer.gohtml")
+func NewView(layout string, files ...string) *View {
+	files = append(files,
+		"views/layouts/footer.gohtml",
+		"views/layouts/bootstrap.gohtml",
+	)
 	t, err := template.ParseFiles(files...)
 	if err != nil {
 		panic(err)
 	}
 	return &View{
 		Template: t,
+		Layout:   layout,
 	}
 }
 
 // View - holds the parsed templates
 type View struct {
 	Template *template.Template
+	Layout   string
 }
