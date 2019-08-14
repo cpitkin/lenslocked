@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"lenslocked/views"
 	"net/http"
 
@@ -10,6 +9,8 @@ import (
 
 var homeView *views.View
 var contactView *views.View
+var faqView *views.View
+var notFoundView *views.View
 
 func home(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
@@ -27,12 +28,16 @@ func contact(w http.ResponseWriter, r *http.Request) {
 
 func faq(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
-	fmt.Fprint(w, "<p>Please direct all questions to our email that can be found in the <a href=/contact>contact</a> page.</p>")
+	if err := faqView.Template.ExecuteTemplate(w, faqView.Layout, nil); err != nil {
+		panic(err)
+	}
 }
 
 func notFound(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNotFound)
-	fmt.Fprint(w, "<h1>We could not find the page you "+"were looking for :(</h1>"+"<p>Please email us if you keep being sent to an invalid page.</p>")
+	if err := notFoundView.Template.ExecuteTemplate(w, notFoundView.Layout, nil); err != nil {
+		panic(err)
+	}
 }
 
 func main() {
@@ -40,6 +45,10 @@ func main() {
 	homeView = views.NewView("bootstrap", "views/home.gohtml")
 
 	contactView = views.NewView("bootstrap", "views/contact.gohtml")
+
+	faqView = views.NewView("bootstrap", "views/faq.gohtml")
+
+	notFoundView = views.NewView("bootstrap", "views/404.gohtml")
 
 	var nf http.Handler = http.HandlerFunc(notFound)
 
