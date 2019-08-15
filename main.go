@@ -44,9 +44,9 @@ func main() {
 
 	contactView = views.NewView("bootstrap", "views/contact.gohtml")
 
-	faqView = views.NewView("bootstrap", "views/faq.gohtml")
+	faqView = views.NewView("material", "views/faq.gohtml")
 
-	notFoundView = views.NewView("bootstrap", "views/404.gohtml")
+	notFoundView = views.NewView("material", "views/404.gohtml")
 
 	var nf http.Handler = http.HandlerFunc(notFound)
 
