@@ -1,6 +1,7 @@
 package main
 
 import (
+	"lenslocked/controllers"
 	"lenslocked/views"
 	"net/http"
 
@@ -12,7 +13,6 @@ var (
 	contactView  *views.View
 	faqView      *views.View
 	notFoundView *views.View
-	signupView   *views.View
 )
 
 func home(w http.ResponseWriter, r *http.Request) {
@@ -28,11 +28,6 @@ func contact(w http.ResponseWriter, r *http.Request) {
 func faq(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html")
 	must(faqView.Render(w, nil))
-}
-
-func signup(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html")
-	must(signupView.Render(w, nil))
 }
 
 func notFound(w http.ResponseWriter, r *http.Request) {
@@ -51,8 +46,9 @@ func main() {
 	homeView = views.NewView("bootstrap", "views/home.gohtml")
 	contactView = views.NewView("bootstrap", "views/contact.gohtml")
 	faqView = views.NewView("material", "views/faq.gohtml")
-	signupView = views.NewView("bootstrap", "views/signup.gohtml")
 	notFoundView = views.NewView("material", "views/404.gohtml")
+
+	usersC := controllers.NewUsers()
 
 	var nf http.Handler = http.HandlerFunc(notFound)
 
@@ -60,7 +56,7 @@ func main() {
 	r.HandleFunc("/", home)
 	r.HandleFunc("/contact", contact)
 	r.HandleFunc("/faq", faq)
-	r.HandleFunc("/signup", signup)
+	r.HandleFunc("/signup", usersC.New)
 
 	r.NotFoundHandler = nf
 	http.ListenAndServe(":3000", r)
