@@ -11,7 +11,7 @@ var (
 	TemplateExt = "*.gohtml"
 )
 
-// Render - render the template with data
+// Render will render the template with data
 func (v *View) Render(w http.ResponseWriter, data interface{}) error {
 	return v.Template.ExecuteTemplate(w, v.Layout, data)
 }
@@ -25,7 +25,7 @@ func layoutFiles() []string {
 	return layouts
 }
 
-// NewView - append layouts to data templates
+// NewView will append layouts to data templates
 func NewView(layout string, files ...string) *View {
 
 	files = append(files, layoutFiles()...)
