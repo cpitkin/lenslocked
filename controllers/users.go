@@ -20,7 +20,7 @@ type SignupForm struct {
 // NewUsers creates a new users signup view. This function will panic so it should only be used during set up
 func NewUsers() *Users {
 	return &Users{
-		NewView: views.NewView("bootstrap", "views/users/new.gohtml"),
+		NewView: views.NewView("bootstrap", "users/new"),
 	}
 }
 
